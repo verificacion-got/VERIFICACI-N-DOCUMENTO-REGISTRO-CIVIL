@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verificación de Documentos</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f2f5;
+    transition: background-color 0.3s;
+  }
+
+  .main-wrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+
+  /* --- PANTALLA 1: FORMULARIO --- */
+  .card {
+    background-color: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 25px;
+    width: 100%;
+    max-width: 380px; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    box-sizing: border-box;
+  }
+
+  @media (min-width: 768px) {
+    .card {
+      padding: 40px;
+      max-width: 700px; /* Tamaño grande para PC */
+      width: 60%;
+    }
+  }
+
+  .header-box {
+    background-color: #f4f8fb;
+    border: 1px solid #e6eff5;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+
+  .header-box h2 {
+    margin: 0;
+    color: #4a7ab5;
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .header-box h2 { font-size: 1.5rem; }
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 6px;
+    font-weight: bold;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    outline: none;
+  }
+
+  @media (min-width: 768px) {
+    input[type="text"] { padding: 15px; font-size: 1.1rem; }
+    label { font-size: 1rem; }
+  }
+
+  .btn-consultar {
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 12px;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  @media (min-width: 768px) {
+    .btn-consultar { width: auto; padding: 15px 60px; display: block; margin: 0 auto; font-size: 1.1rem; }
+  }
+
+  /* --- PANTALLA 2: RESULTADO (IDÉNTICO A IMAGEN) --- */
+  #resultado {
+    display: none;
+    width: 100%;
+    text-align: center;
+    background-color: #ffffff;
+  }
+
+  .alert-success {
+    background-color: #f8fcf8;
+    border: 1px solid #e0ede0;
+    color: #72a376;
+    padding: 15px;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    margin: 0 auto 50px auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    max-width: 90%;
+  }
+
+  @media (min-width: 768px) {
+    .alert-success { font-size: 1.2rem; padding: 20px; max-width: 800px; }
+  }
+
+  .pdf-section {
+    margin-top: 60px;
+  }
+
+  .pdf-icon {
+    background-color: #e0e0e0;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 14px;
+  }
+
+  .file-name {
+    display: block;
+    margin: 15px 0;
+    color: #555;
+    font-size: 16px;
+  }
+
+  .btn-abrir {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    padding: 12px 40px;
+    border-radius: 25px;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 500;
+  }
+
+  @media (min-width: 768px) {
+    .btn-abrir { padding: 15px 70px; font-size: 1.3rem; }
+    .file-name { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="main-wrapper">
+  
+  <div id="pantalla-inicial" class="card">
+    <div class="header-box">
+      <h2>Verificación de Certificados</h2>
+    </div>
+    
+    <div class="form-group">
+      <label>Folio:</label>
+      <input type="text" id="inputFolio" placeholder="Ej: 500004443232" inputmode="numeric">
+    </div>
+
+    <div class="form-group">
+      <label>Código de Verificación:</label>
+      <input type="text" id="inputCodigo" placeholder="Ej: 2rR4c56Cv332">
+    </div>
+
+    <button class="btn-consultar" onclick="verificarDatos()">Consultar</button>
+  </div>
+
+  <div id="resultado">
+    <div class="alert-success">
+      El certificado es válido, verifique los datos en el documento generado. 
+      <span style="color: #72a376; font-size: 1.2rem;">✔</span>
+    </div>
+
+    <div class="pdf-section">
+      <div class="pdf-icon">PDF</div>
+      <span class="file-name">verCopiaPdf.srcei</span>
+      <a href="franciscoO.pdf" target="_blank" class="btn-abrir">Abrir</a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function verificarDatos() {
+    const folio = document.getElementById('inputFolio').value.trim();
+    const codigo = document.getElementById('inputCodigo').value.trim();
+
+    // Credenciales solicitadas
+    const folioCorrecto = "500676750328";
+    const codigoCorrecto = "2815b3368f84";
+
+    if (folio === folioCorrecto && codigo === codigoCorrecto) {
+      document.getElementById('pantalla-inicial').style.display = 'none';
+      document.getElementById('resultado').style.display = 'block';
+      document.body.style.backgroundColor = "#ffffff";
+    } else {
+      alert("Los datos no coinciden.");
+    }
+  }
+</script>
+
+</body>
+</html>
